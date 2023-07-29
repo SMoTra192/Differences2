@@ -20,7 +20,7 @@ public class ButtonClicked : MonoBehaviour
     {
         indexButton = gameObject.transform.GetSiblingIndex() + 2;
         int completeLevel = PlayerPrefs.GetInt("LevelValue");
-        _cloudsClose.SetActive(true);
+        if(indexButton < completeLevel + 1) _cloudsClose.SetActive(true);
         yield return new WaitForSeconds(1f);
         if(indexButton < completeLevel + 1) SceneManager.LoadScene(indexButton);
     }

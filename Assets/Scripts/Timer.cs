@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.Events;
 
 public class Timer : MonoBehaviour
@@ -17,6 +18,7 @@ public class Timer : MonoBehaviour
     public UnityEvent timed = new();
     private bool isVibrated;
     private bool isFinished = false;
+    private bool isTimed = false;
     [SerializeField] private float  timeForGameOver = 30f;
 
 
@@ -49,8 +51,29 @@ public class Timer : MonoBehaviour
            if(isFinished == false) _timer -= Time.deltaTime;
             UpdateDisplay(_timer);
         }
-        if( _timer < timeForGameOver) Vibration.VibrateAndroid(500);
-
+        //if( _timer < timeForGameOver) 
+        if (_timer < timeForGameOver )
+        {
+            if (isTimed == false)
+            {
+                Vibration.VibrateAndroid(500);
+                isTimed = true;
+            }
+            _firstminute.color = Color.red;
+            _secondminute.color = Color.red;
+            _separator.color = Color.red;
+                _fisrtsecond.color = Color.red;
+            _secondsecond.color = Color.red;
+        }
+        else
+        {
+            isTimed = false;
+            _firstminute.color = Color.white;
+            _secondminute.color = Color.white;
+            _separator.color = Color.white;
+            _fisrtsecond.color = Color.white;
+            _secondsecond.color = Color.white;
+        }
         //if (_timer < minTimeForFinalArea && _timer > maxTimeForFinalArea) timed.Invoke();
         // ReSharper disable once CompareOfFloatsByEqualityOperator
         //if (_timer == timeForGameOver) timed.Invoke();

@@ -23,6 +23,7 @@ public class UIEndGame : MonoBehaviour
             particle.Play();
         }
     }
+    
     public void HideObjects()
     {
         gamePlay.SetActive(false);

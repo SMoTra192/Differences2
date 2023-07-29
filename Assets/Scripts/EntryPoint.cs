@@ -11,7 +11,6 @@ public class EntryPoint : MonoBehaviour
 {
     [SerializeField] private Timer _timer;
     [SerializeField] private UIEndGame _endGame;
-    [SerializeField] private GameObject timer;
     [SerializeField] private CheckDetection _check;
     private float time,timeForGameOver,timerForFinishStart = 1f;
     private int _winningPoints, pointsToWin;
@@ -20,6 +19,8 @@ public class EntryPoint : MonoBehaviour
     private bool isEndGamedWithSuccess =false;
     private bool isFinished = false;
     [SerializeField] private GameObject _counter;
+    [SerializeField] private GameObject iconsParent;
+    [SerializeField] private AudioSource _sourceDiffIcons;
     void Start()
     {
         
@@ -30,11 +31,11 @@ public class EntryPoint : MonoBehaviour
         
         
         pointsToWin = _check.PointsToWin();
-
+print(pointsToWin);
         FindObjectOfType<ReferenceIdentification>().ReferenceTouched.AddListener(() =>
         {
             _winningPoints = _check.WinningPoints();
-            
+            print(_winningPoints);
         FindObjectOfType<CheckEffects>().endEffects.AddListener(()=> isEndGamedWithSuccess = true);        
             
 
@@ -49,9 +50,12 @@ public class EntryPoint : MonoBehaviour
         {
             timerForFinishStart -= Time.deltaTime;
         }
+        
         if (_winningPoints == pointsToWin && timerForFinishStart < 0 && isFinished == false)
         {
+            print("sucC");
             _counter.SetActive(true);
+            _sourceDiffIcons.Play();
             startEndGameEffect.Invoke();
             isFinished = true;
         }
@@ -61,6 +65,7 @@ public class EntryPoint : MonoBehaviour
              if (time < 1f ) endGamed?.Invoke();
              if (_winningPoints == pointsToWin && isEndGamedWithSuccess == true)
              {
+                 print("succ");
                  endGamedWithSuccess.Invoke();
              }   
 
@@ -79,19 +84,7 @@ public class EntryPoint : MonoBehaviour
         _endGame.HideParticles();
         _endGame.ShowObjects();
     }
-
-    public void startLevelAgain()
-    {
-        int SceneNumber = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(SceneNumber);
-    }
-
-    public void NextLevel()
-    {
-        int NextSceneNumber = SceneManager.GetActiveScene().buildIndex + 1;
-        SceneManager.LoadScene(NextSceneNumber);
-    }
-
+    
     public bool IsFinished()
     {
         return isFinished;

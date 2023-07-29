@@ -16,6 +16,7 @@ public class CheckEffects : MonoBehaviour
     
     private void Start()
     {
+    Vibration.Init();
         _countOfEffects = gameObject.transform.childCount;
         //print(_countOfEffects);
         //Check = transform.GetChild(index);
@@ -45,6 +46,9 @@ public class CheckEffects : MonoBehaviour
         if(index < _countOfEffects) 
         {
             Check = transform.GetChild(index);
+            Check.gameObject.SetActive(false);
+            Check.gameObject.SetActive(true);
+            Vibration.VibrateAndroid(70);
             //Check.transform.Find("Check").transform.Find("Particle").gameObject.SetActive(true);
             //print($"started {index}");
             index++;

@@ -20,8 +20,30 @@ public class AudioSettings : MonoBehaviour
     {
         _toggleMusic.isOn = PlayerPrefs.GetInt("MusicEnabled") == 1;
         _toggleEffects.isOn = PlayerPrefs.GetInt("EffectsEnabled") == 1;
-        
-        
+        if (PlayerPrefs.GetInt("MusicEnabled") == 0)
+        {
+            musicOn.SetActive(true);
+            musicOff.SetActive(false);
+            Master.audioMixer.SetFloat("Music", 0);
+        }
+        else
+        {
+            musicOn.SetActive(false);
+            musicOff.SetActive(true);
+            Master.audioMixer.SetFloat("Music", -80);
+        }
+        if (PlayerPrefs.GetInt("EffectsEnabled") == 0)
+        {
+            effectsOn.SetActive(true);
+            effectsOff.SetActive(false);
+            Master.audioMixer.SetFloat("Effects", 0);
+        }
+        else
+        {
+            effectsOn.SetActive(false);
+            effectsOff.SetActive(true);
+            Master.audioMixer.SetFloat("Effects", -80);
+        }
     }
 
 
@@ -31,13 +53,13 @@ public class AudioSettings : MonoBehaviour
         {
             musicOn.SetActive(false);
             musicOff.SetActive(true);
-            //Master.audioMixer.SetFloat("Music", -80);
+            Master.audioMixer.SetFloat("Music", -80);
         }
         else 
         {
             musicOn.SetActive(true);
             musicOff.SetActive(false);
-            //Master.audioMixer.SetFloat("Music", 0);
+            Master.audioMixer.SetFloat("Music", 0);
             
         }
         PlayerPrefs.SetInt("MusicEnabled", enabledMusic ? 1 : 0);
@@ -49,14 +71,14 @@ public class AudioSettings : MonoBehaviour
         {
             effectsOn.SetActive(false);
             effectsOff.SetActive(true);
-           // Master.audioMixer.SetFloat("Effects", -80);
+           Master.audioMixer.SetFloat("Effects", -80);
         }
         else 
         {
             
             effectsOn.SetActive(true);
             effectsOff.SetActive(false);
-            //Master.audioMixer.SetFloat("Effects", 0);
+            Master.audioMixer.SetFloat("Effects", 0);
             
         }
         PlayerPrefs.SetInt("EffectsEnabled", enabledEffects ? 1 : 0);

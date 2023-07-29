@@ -7,20 +7,17 @@ using UnityEngine;
 public class CheckDetection : MonoBehaviour
 {
     private int index;
-    //private int prop;
+    private Transform check;
     private void Awake()
     {
         index = 0;
-        Transform Check;
-        
         FindObjectOfType<ReferenceIdentification>().ReferenceTouched.AddListener(() =>
         {
             if (index < gameObject.transform.childCount)
             {
-                Check = gameObject.transform.GetChild(index);
+                check = gameObject.transform.GetChild(index);
                 gameObject.transform.GetChild(index);
-                Check.gameObject.transform.Find("Check").gameObject.SetActive(true);
-                Check.gameObject.transform.Find("Cross").gameObject.SetActive(false);
+                
                 index++;
                 
             }
@@ -28,9 +25,10 @@ public class CheckDetection : MonoBehaviour
         
     }
 
-    private void Update()
+    public void checkDetect()
     {
-        PointsToWin();
+        check.gameObject.transform.Find("Check").gameObject.SetActive(true);
+        check.gameObject.transform.Find("Cross").gameObject.SetActive(false);
     }
 
     public int WinningPoints()

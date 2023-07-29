@@ -39,7 +39,7 @@ public class PointDetect : MonoBehaviour , IPointerUpHandler  , IPointerDownHand
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (!isTouched)
+        if (!isTouched && Input.touchCount != 2)
         {
             FindObjectOfType<TakeTime>().timeDown.Invoke();
             RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas, Input.mousePosition, _camera,
