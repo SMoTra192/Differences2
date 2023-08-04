@@ -21,7 +21,7 @@ public class Tutorial : MonoBehaviour
                 tutorialObj.SetActive(false);
                 obj2.SetActive(false);
                 tutorialObj2.SetActive(true);
-                StartCoroutine(wait());
+                isSecReady = true;
             }
             
         });
@@ -32,12 +32,7 @@ public class Tutorial : MonoBehaviour
     void Update()
     {
         if (Input.touchCount == 2) tutorialObj2.SetActive(false);
-        if(Input.touchCount == 1 & isSecReady == true) tutorialObj2.SetActive(false);
     }
 
-    IEnumerator wait()
-    {
-        yield return new WaitForSeconds(1f);
-        isSecReady = true;
-    }
+    
 }
