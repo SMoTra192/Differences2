@@ -92,6 +92,7 @@ GameObject:
   - component: {fileID: 7086937547858945167}
   - component: {fileID: 6254540262603902266}
   - component: {fileID: 3888324793594312225}
+  - component: {fileID: 7864086203660926696}
   m_Layer: 5
   m_Name: Image_1Mask
   m_TagString: Untagged
@@ -148,6 +149,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding: {x: 0, y: 0, z: 0, w: 0}
   m_Softness: {x: 0, y: 0}
+--- !u!222 &7864086203660926696
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7957481741431532025}
+  m_CullTransparentMesh: 1
 --- !u!1 &8757702967782842041
 GameObject:
   m_ObjectHideFlags: 0

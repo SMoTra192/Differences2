@@ -4,24 +4,31 @@ using UnityEngine;
 
 public class Tutorial : MonoBehaviour
 {
+    
+    [SerializeField] private GameObject tutorialObj,tutorialObj2;
+    private bool isSecReady = false;
     void Start()
     {
         if (PlayerPrefs.GetInt("Tutorial") == 0)
         {
             gameObject.SetActive(false);
         }
-        if (PlayerPrefs.GetInt("Tutorial") == 1)
+        FindObjectOfType<ReferenceIdentification>().ReferenceTouched.AddListener(() =>
         {
-            print(PlayerPrefs.GetInt("Tutorial"));
-            PlayerPrefs.SetInt("Tutorial",0);
-            print(PlayerPrefs.GetInt("Tutorial"));
-        }
+            if (PlayerPrefs.GetInt("Tutorial") == 1)
+            {
+                PlayerPrefs.SetInt("Tutorial",0);
+                tutorialObj.SetActive(false);
+                tutorialObj2.SetActive(true);
+            }
+            
+        });
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.touchCount == 2) tutorialObj2.SetActive(false);
     }
 }
