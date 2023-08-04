@@ -5,7 +5,7 @@ using UnityEngine;
 public class Tutorial : MonoBehaviour
 {
     
-    [SerializeField] private GameObject tutorialObj,tutorialObj2;
+    [SerializeField] private GameObject tutorialObj,obj2,tutorialObj2;
     private bool isSecReady = false;
     void Start()
     {
@@ -19,7 +19,9 @@ public class Tutorial : MonoBehaviour
             {
                 PlayerPrefs.SetInt("Tutorial",0);
                 tutorialObj.SetActive(false);
+                obj2.SetActive(false);
                 tutorialObj2.SetActive(true);
+                isSecReady = true;
             }
             
         });
@@ -30,5 +32,6 @@ public class Tutorial : MonoBehaviour
     void Update()
     {
         if (Input.touchCount == 2) tutorialObj2.SetActive(false);
+        if(Input.touchCount == 1 & isSecReady == true) tutorialObj2.SetActive(false);
     }
 }
