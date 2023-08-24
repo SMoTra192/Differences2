@@ -7,7 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class PointDetect : MonoBehaviour , IPointerUpHandler  , IPointerDownHandler , IPointerMoveHandler 
+public class PointDetect : MonoBehaviour, IPointerUpHandler, IPointerDownHandler, IPointerMoveHandler
 {
     private Button _button;
     private Vector2 pointPosition;
@@ -22,9 +22,9 @@ public class PointDetect : MonoBehaviour , IPointerUpHandler  , IPointerDownHand
     {
         starttimer = _timer;
         _button = GetComponent<Button>();
-        
+
     }
-    
+
     public Vector2 PointPosition()
     {
         return pointPosition;
@@ -34,7 +34,7 @@ public class PointDetect : MonoBehaviour , IPointerUpHandler  , IPointerDownHand
     {
         //print(isDowned);
         //isDowned = true;
-       // print(isDowned);
+        // print(isDowned);
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -46,31 +46,34 @@ public class PointDetect : MonoBehaviour , IPointerUpHandler  , IPointerDownHand
                 out pointPosition
             );
             ImageClicked.Invoke();
-            
+
         }
 
         if (isDowned) isDowned = false;
         if (isTouched)
         {
             isTouched = false;
-            
+
         }
     }
+
     public void OnPointerDown(PointerEventData eventData)
     {
         isDowned = true;
+        //print("Downed");
     }
+
     public void OnPointerMove(PointerEventData eventData)
     {
         if (isDowned)
         {
+            //print("moved");
             //FindObjectOfType<ZoomPicture>().Zoom();
-            isTouched = true; 
+            isTouched = true;
         }
 
-        
+
     }
 
-    
-    
+
 }

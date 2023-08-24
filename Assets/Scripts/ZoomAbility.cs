@@ -1,44 +1,74 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class ZoomAbility : MonoBehaviour
+public class ZoomAbility : MonoBehaviour 
 {
     Vector3 touchStart;
     public float zoomOutMin = 1;
-    public float zoomOutMax = 8;
+    public float zoomOutMax = 2;
 
-    [SerializeField] private RectTransform _firstImage, _secondImage;
-    private float _value;
+    [SerializeField] private Image _firstImage, _secondImage;
+
+    private float _currentValue, _value;
     private Vector3 _scale;
-
+    private float xPos, yPos, xPos2, yPos2;
 
     private Vector3 startPosPic1, startPosPic2;
+    private bool isTouched = false;
     
     
-[SerializeField] float leftLimit=-1,rightLimit = 1;
-private Vector3[] _vector3 = new Vector3[4];
-float topLimit ,bottomLimit,topLimit2,bottomLimit2;
+    [SerializeField] private RectTransform _parent1, _parent2;
+
+
+    private float minX, maxX, minY, maxY;
+    private float minX2, maxX2, minY2, maxY2;
+    
+    
+    
+    
+    
+    
+    
+    
     private void Awake()
     {
-        _value = _firstImage.transform.localScale.x;
-        topLimit = _firstImage.position.y + 1;
-        bottomLimit = _firstImage.position.y - 1;
-        topLimit2 = _secondImage.position.y + 1;
-        bottomLimit2 = _secondImage.position.y - 1;
+        _value = zoomOutMax;
+        
+        minX = _parent1.transform.position.x - _firstImage.sprite.bounds.size.x/2;
+        maxX = _parent1.transform.position.x + _firstImage.sprite.bounds.size.x/2;
+        
+        
+        minY = _parent1.transform.position.y - _firstImage.sprite.bounds.size.y/2;
+        maxY = _parent1.transform.position.y + _firstImage.sprite.bounds.size.y/2;
+        
+        
+        
+        minX2 = _parent2.transform.position.x - _secondImage.sprite.bounds.size.x/2;
+        maxX2 = _parent2.transform.position.x + _secondImage.sprite.bounds.size.x/2;
+        
+        
+        minY2 = _parent2.transform.position.y - _secondImage.sprite.bounds.size.y/2;
+        maxY2 = _parent2.transform.position.y + _secondImage.sprite.bounds.size.y/2;
+        
+
+
+
+
+
+
     }
 
-    // Update is called once per frame
-    void Update () {
-        if(Input.GetMouseButtonDown(0)){
-            touchStart = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            startPosPic1 = _firstImage.transform.position;
-            startPosPic2 = _secondImage.transform.position;
-        }
-        if(Input.touchCount == 2)
+    void Update()
+    {
+        PanPicture();
+       
+
+
+        
+        if (Input.touchCount == 2)
         {
-            
+
             Touch touchZero = Input.GetTouch(0);
             Touch touchOne = Input.GetTouch(1);
 
@@ -51,31 +81,79 @@ float topLimit ,bottomLimit,topLimit2,bottomLimit2;
             float difference = currentMagnitude - prevMagnitude;
 
             zoom(difference * 0.01f);
-        }else if(Input.GetMouseButton(0)){
-            Vector3 direction = touchStart - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Camera.main.transform.position += direction;
-            
+        }
+
+        zoom(Input.GetAxis("Mouse ScrollWheel"));
+
+    }
+
+    private void PanPicture()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            touchStart = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            startPosPic1 = _firstImage.transform.position;
+            startPosPic2 = _secondImage.transform.position;
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            Vector3 direction = touchStart - Camera.main.ScreenToWorldPoint(Input.mousePosition); 
             
             Vector3 picture1Pos = startPosPic1 - direction;
-            Vector3 picture2Pos= startPosPic2 - direction;
-                
+            Vector3 picture2Pos = startPosPic2 - direction;
             
-            _firstImage.position = new Vector3(Mathf.Clamp(picture1Pos.x, leftLimit, rightLimit),
-               Mathf.Clamp(picture1Pos.y, bottomLimit, topLimit), transform.position.z);
-            _secondImage.position = new Vector3(Mathf.Clamp(picture2Pos.x, leftLimit, rightLimit),
-               Mathf.Clamp(picture2Pos.y, bottomLimit2, topLimit2), transform.position.z);
+            _firstImage.transform.position = ClampImage(picture1Pos);
+            _secondImage.transform.position = ClampImage2(picture2Pos);
             
-
-
         }
-        zoom(Input.GetAxis("Mouse ScrollWheel"));
-        
     }
+        void zoom(float increment)
+        {
+            _currentValue = Mathf.Clamp(_currentValue + increment, zoomOutMin, zoomOutMax);
+            _value = Mathf.Clamp(_value - increment, zoomOutMin, zoomOutMax);
+            _firstImage.transform.localScale = new Vector3(_currentValue, _currentValue, _currentValue);
+            _firstImage.transform.position = ClampImage(_firstImage.transform.position);
+            _secondImage.transform.localScale = new Vector3(_currentValue, _currentValue, _currentValue);
+            _secondImage.transform.position = ClampImage2(_secondImage.transform.position);
+           
+        }
 
-    void zoom(float increment){
-        _value = Mathf.Clamp(_value + increment, zoomOutMin, zoomOutMax);
-        _firstImage.transform.localScale = new Vector3(_value, _value, _value);
-        _secondImage.transform.localScale = new Vector3(_value, _value, _value);
-        //Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - increment, zoomOutMin, zoomOutMax);
-    }
+        private Vector3 ClampImage(Vector3 targetPos)
+        {
+            float ImageHeight = _value;
+            float ImageWidth = _value * (_firstImage.sprite.bounds.size.x/_firstImage.sprite.bounds.size.y);
+            
+            
+            float minX = (this.minX + ImageWidth);
+            float maxX = (this.maxX - ImageWidth);
+            float minY = (this.minY + ImageHeight); 
+            float maxY = (this.maxY - ImageHeight);
+
+            float newX = Mathf.Clamp(targetPos.x, minX, maxX);
+            float newY = Mathf.Clamp(targetPos.y, minY, maxY);
+
+            return new Vector3(newX, newY, targetPos.z);
+            
+            
+        }
+        private Vector3 ClampImage2(Vector3 targetPos)
+        {
+            float ImageHeight = _value;
+            float ImageWidth = _value * (_secondImage.sprite.bounds.size.x/_secondImage.sprite.bounds.size.y);
+            
+            
+            float minX = (this.minX2 + ImageWidth);
+            float maxX = (this.maxX2 - ImageWidth);
+            float minY = (this.minY2 + ImageHeight); 
+            float maxY = (this.maxY2- ImageHeight);
+
+            float newX = Mathf.Clamp(targetPos.x, minX, maxX);
+            float newY = Mathf.Clamp(targetPos.y, minY, maxY);
+
+            return new Vector3(newX, newY, targetPos.z);
+            
+            
+        }
 }
+

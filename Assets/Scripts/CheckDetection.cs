@@ -8,6 +8,7 @@ public class CheckDetection : MonoBehaviour
 {
     private int index;
     private Transform check;
+    
     private void Awake()
     {
         index = 0;

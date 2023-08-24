@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a205b9307692f6d4181dfef07b1b48e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _button: {fileID: 8294279684560919618}
 --- !u!1 &7960297844077018488
 GameObject:
   m_ObjectHideFlags: 0
@@ -120,7 +121,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 82946902, guid: 97f05785eeae32245ba22e8fc5b5887f, type: 3}
+  m_Sprite: {fileID: -1827134828, guid: 2adff61727a15694ead8822dad4deca3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -172,7 +173,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -3413511274548594364, guid: fc1126d55e0f4704f9c10509ee3baf12, type: 2}
-  m_audioClip: {fileID: 8300000, guid: bd86198aefb5bfa4f9119e463c9c7696, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 165d42b2a7d168b4eae3523bc35895af, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.8
   m_Pitch: 1

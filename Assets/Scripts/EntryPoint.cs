@@ -31,11 +31,11 @@ public class EntryPoint : MonoBehaviour
         
         
         pointsToWin = _check.PointsToWin();
-print(pointsToWin);
+//print(pointsToWin);
         FindObjectOfType<ReferenceIdentification>().ReferenceTouched.AddListener(() =>
         {
             _winningPoints = _check.WinningPoints();
-            print(_winningPoints);
+            //print(_winningPoints);
         FindObjectOfType<CheckEffects>().endEffects.AddListener(()=> isEndGamedWithSuccess = true);        
             
 
@@ -53,7 +53,7 @@ print(pointsToWin);
         
         if (_winningPoints == pointsToWin && timerForFinishStart < 0 && isFinished == false)
         {
-            print("sucC");
+           // print("sucC");
             _counter.SetActive(true);
             _sourceDiffIcons.Play();
             startEndGameEffect.Invoke();
@@ -65,7 +65,7 @@ print(pointsToWin);
              if (time < 1f ) endGamed?.Invoke();
              if (_winningPoints == pointsToWin && isEndGamedWithSuccess == true)
              {
-                 print("succ");
+                 //print("succ");
                  endGamedWithSuccess.Invoke();
              }   
 

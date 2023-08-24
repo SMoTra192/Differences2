@@ -6,7 +6,7 @@ public class GameSetting : MonoBehaviour
 {
     private void Awake()
     {
-        PlayerPrefs.SetInt("level_count",PlayerPrefs.GetInt("level_count") + 1);
+        //PlayerPrefs.SetInt("level_count",PlayerPrefs.GetInt("level_count") + 1);
         Application.targetFrameRate = 60;
     }
 }

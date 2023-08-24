@@ -5,78 +5,44 @@ using UnityEngine.EventSystems;
 public class ZoomPicture : MonoBehaviour 
 
 {
-    [SerializeField] private GameObject obj,obj2;
-    [SerializeField] private float minZoom=1, maxZoom=5;
-    private Vector3 VminZoom, VmaxZoom;
-    public float sensitivity;
+    private float _value;
     private Vector3 _scale;
-    Vector2 f0start;
-    Vector2 f1start;
-    private Vector2 f0PrevPos, f1PrevPos;
+    [SerializeField] private GameObject _firstImage,_secondImage;
+        
+    Vector3 touchStart;
+    public float zoomOutMin = 1;
+    public float zoomOutMax = 8;
+	
+    // Update is called once per frame
+    void Update () {
+        if(Input.GetMouseButtonDown(0)){
+            touchStart = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        }
+        if(Input.touchCount == 2){
+            Touch touchZero = Input.GetTouch(0);
+            Touch touchOne = Input.GetTouch(1);
 
-    private void Awake()
-    {
-        VminZoom = new Vector3(minZoom, minZoom, minZoom);
-        VmaxZoom = new Vector3(maxZoom, maxZoom, maxZoom);
+            Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
+            Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+
+            float prevMagnitude = (touchZeroPrevPos - touchOnePrevPos).magnitude;
+            float currentMagnitude = (touchZero.position - touchOne.position).magnitude;
+
+            float difference = currentMagnitude - prevMagnitude;
+
+            zoom(difference * 0.01f);
+        }else if(Input.GetMouseButton(0)){
+            Vector3 direction = touchStart - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            _firstImage.transform.position += direction * 0.01f;
+            _secondImage.transform.position += direction * 0.01f;
+        }
+        zoom(Input.GetAxis("Mouse ScrollWheel"));
     }
 
-    void Update()
-
-    {
-
-        if (Input.touchCount < 2)
-
-        {
-
-            f0start = Vector2.zero;
-
-            f1start = Vector2.zero;
-
-        }
-        if (Input.touchCount == 2) Zoom();
-
-    }
-
-    public void Zoom()
-
-    {
-
-        if (f0start == Vector2.zero && f1start == Vector2.zero)
-
-        {
-
-            f0start = Input.GetTouch(0).position;
-
-            f1start = Input.GetTouch(1).position;
-
-        }
-
-        Vector2 f0position = Input.GetTouch(0).position;
-//print(f0position);
-        Vector2 f1position = Input.GetTouch(1).position;
-//print(f1position);
-        float dir = Mathf.Sign(Vector2.Distance(f1start, f0start) - Vector2.Distance(f0position, f1position));
-        //float zoom = f0start.x / f0position.x;
-        //transform.position = Vector3.MoveTowards(transform.position, transform.position + transform.forward, dir * sensitivity * Time.deltaTime * Vector3.Distance(f0position, f1position));
-        //float XandYScale = zoom * sensitivity;
-        float XandYScale = dir * sensitivity * Time.deltaTime * Vector3.Distance(f0position, f1position);
-        //print(XandYScale);
-        Vector3 Scale = new Vector3(XandYScale , XandYScale, 0);
-        _scale = Scale;   
-        print(_scale);
-        if(f0PrevPos != f0position)obj.transform.localScale -= _scale;
-        if(f0PrevPos != f0position)obj2.transform.localScale -= _scale;
-        
-        f0PrevPos = f0position;
-        f1PrevPos = f1position;
-        
-        if (obj.transform.localScale.x < VminZoom.x) obj.transform.localScale = VminZoom;
-        if (obj.transform.localScale.x > VmaxZoom.x) obj.transform.localScale = VmaxZoom;
-        
-        
-        if (obj2.transform.localScale.x < VminZoom.x) obj2.transform.localScale = VminZoom;
-        if (obj2.transform.localScale.x > VmaxZoom.x) obj2.transform.localScale = VmaxZoom;
-        
+    void zoom(float increment){
+        _value = Mathf.Clamp(_value + increment, zoomOutMin, zoomOutMax);
+        _firstImage.transform.localScale = new Vector3(_value, _value, _value);
+        _secondImage.transform.localScale = new Vector3(_value, _value, _value);
     }
 
     
