@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ZoomAbility : MonoBehaviour 
@@ -26,45 +25,28 @@ public class ZoomAbility : MonoBehaviour
     
     
     
-    
-    
-    
-    
-    
     private void Awake()
     {
         _value = zoomOutMax;
         
         minX = _parent1.transform.position.x - _firstImage.sprite.bounds.size.x/2;
         maxX = _parent1.transform.position.x + _firstImage.sprite.bounds.size.x/2;
-        
-        
         minY = _parent1.transform.position.y - _firstImage.sprite.bounds.size.y/2;
         maxY = _parent1.transform.position.y + _firstImage.sprite.bounds.size.y/2;
         
         
         
+        
         minX2 = _parent2.transform.position.x - _secondImage.sprite.bounds.size.x/2;
         maxX2 = _parent2.transform.position.x + _secondImage.sprite.bounds.size.x/2;
-        
-        
         minY2 = _parent2.transform.position.y - _secondImage.sprite.bounds.size.y/2;
         maxY2 = _parent2.transform.position.y + _secondImage.sprite.bounds.size.y/2;
-        
-
-
-
-
-
 
     }
 
     void Update()
     {
         PanPicture();
-       
-
-
         
         if (Input.touchCount == 2)
         {
